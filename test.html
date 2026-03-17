@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial CSS: Box Model, Float, Flexbox - PNM</title>
+    <style>
+        /* ============================================
+           RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: #003366;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            background: #ffcc00;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #003366;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* ============================================
+           MAIN CONTENT SECTIONS
+           ============================================ */
+        .section {
+            padding: 40px;
+            border-bottom: 3px solid #eee;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: #003366;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: #ffcc00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        /* ============================================
+           1. BOX MODEL VISUALIZATION
+           ============================================ */
+        .box-model-demo {
+            margin: 30px 0;
+        }
+
+        .box-model-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* MARGIN (Oranye - Luar) */
+        .margin-box {
+            background: #ff9800;
+            padding: 30px;
+            display: inline-block;
+            position: relative;
+            border: 2px dashed #e65100;
+        }
+
+        .margin-label {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e65100;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        /* BORDER (Merah) */
+        .border-box {
+            background: #f44336;
+            padding: 20px;
+            position: relative;
+            border: 5px solid #b71c1c;
+        }
+
+        .border-label {
+            position: absolute;
+            top: -15px;
+            right: 10px;
+            background: #b71c1c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        /* PADDING (Hijau - Dalam) */
+        .padding-box {
+            background: #4caf50;
+            padding: 40px;
+            position: relative;
+            border: 2px dashed #2e7d32;
+        }
+
+        .padding-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: #2e7d32;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        /* CONTENT (Biru - Isi) */
+        .content-box {
+            background: #2196f3;
+            color: white;
+            padding: 30px 50px;
+            text-align: center;
+            border: 3px solid #0d47a1;
+            min-width: 200px;
+        }
+
+        .content-label {
+            background: #0d47a1;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        /* ============================================
+           2. PADDING VS MARGIN COMPARISON
+           ============================================ */
+        .comparison-container {
+            display: flex;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .comparison-box {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .comparison-title {
+            background: #003366;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .demo-area {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* Padding Demo */
+        .padding-demo {
+            background: #e3f2fd;
+            border: 3px solid #2196f3;
+        }
+
+        .inner-padding {
+            background: #2196f3;
+            color: white;
+            padding: 30px;  /* PADDING: Ruang DALAM */
+            text-align: center;
+        }
+
+        /* Margin Demo */
+        .margin-demo {
+            background: #fff3e0;
+            border: 3px solid #ff9800;
+        }
+
+        .inner-margin {
+            background: #ff9800;
+            color: white;
+            margin: 30px;   /* MARGIN: Ruang LUAR */
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* ============================================
+           3. FLOAT DEMONSTRATION
+           ============================================ */
+        .float-container {
+            background: #f5f5f5;
+            padding: 20px;
+            border: 2px dashed #999;
+            margin: 20px 0;
+            overflow: hidden; /* Clearfix */
+        }
+
+        .float-box {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+            background: linear-gradient(45deg, #4834d4, #686de0);
+        }
+
+        .clear-demo {
+            clear: both;
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        /* ============================================
+           4. FLEXBOX DEMONSTRATION
+           ============================================ */
+        .flex-container {
+            display: flex;
+            gap: 20px;
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 200px;
+        }
+
+        .flex-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-row {
+            flex-direction: row;
+        }
+
+        .flex-column {
+            flex-direction: column;
+            height: 300px;
+        }
+
+        .flex-center {
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ============================================
+           5. MULTIPLE COLUMN LAYOUTS
+           ============================================ */
+        .column-methods {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .method-box {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .method-header {
+            background: #003366;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .method-content {
+            padding: 20px;
+        }
+
+        /* Float Columns */
+        .float-columns::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .float-col {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            text-align: center;
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+
+        /* Flexbox Columns */
+        .flex-columns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .flex-col {
+            flex: 1;
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        /* Grid Columns */
+        .grid-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .grid-col {
+            background: #2ecc71;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        /* ============================================
+           INFO BOXES
+           ============================================ */
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h4 {
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+
+        .code-snippet {
+            background: #263238;
+            color: #aed581;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #ff7043;
+            font-weight: bold;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .comparison-container,
+            .column-methods {
+                flex-direction: column;
+            }
+            
+            .float-left,
+            .float-right {
+                float: none;
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .flex-container {
+                flex-direction: column;
+            }
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate {
+            animation: pulse 2s infinite;
+        }
+
+        footer {
+            background: #003366;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <header>
+            <h1>🎓 Tutorial CSS Lengkap</h1>
+            <p>Politeknik Negeri Madiun - Materi Box Model, Float, Clear, Flexbox & Multiple Column</p>
+        </header>
+
+        <!-- NAVIGATION -->
+        <nav>
+            <a href="#boxmodel">Box Model</a>
+            <a href="#marginpadding">Margin vs Padding</a>
+            <a href="#floatclear">Float & Clear</a>
+            <a href="#flexbox">Flexbox</a>
+            <a href="#columns">Multiple Column</a>
+        </nav>
+
+        <!-- SECTION 1: BOX MODEL -->
+        <section class="section" id="boxmodel">
+            <h2 class="section-title">
+                <span class="section-icon">📦</span>
+                1. Box Model (Kotak CSS)
+            </h2>
+            
+            <p>Setiap elemen HTML di CSS dianggap sebagai kotak yang terdiri dari 4 lapisan:</p>
+
+            <div class="box-model-demo" style="text-align: center;">
+                <div class="box-model-container">
+                    <!-- MARGIN (Luar) -->
+                    <div class="margin-box">
+                        <span class="margin-label">MARGIN (Luar)</span>
+                        
+                        <!-- BORDER -->
+                        <div class="border-box">
+                            <span class="border-label">BORDER</span>
+                            
+                            <!-- PADDING (Dalam) -->
+                            <div class="padding-box">
+                                <span class="padding-label">PADDING (Dalam)</span>
+                                
+                                <!-- CONTENT -->
+                                <div class="content-box">
+                                    <span class="content-label">CONTENT</span>
+                                    <br><br>
+                                    <strong>Ini adalah konten sebenarnya</strong><br>
+                                    (teks, gambar, video, dll)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>💡 Analogi Sederhana:</h4>
+                <p>Bayangkan sebuah <strong>foto (content)</strong> yang ditempel di <strong>bingkai (padding)</strong>, 
+                dikelilingi <strong>garis tepi (border)</strong>, dan ditempatkan di <strong>meja dengan jarak dari dinding (margin)</strong>.</p>
+            </div>
+
+            <div class="code-snippet">
+/* Box Model dalam CSS */
+.kotak {
+    <span class="highlight">margin:</span> 30px;        /* Jarak LUAR elemen */
+    <span class="highlight">border:</span> 5px solid red;  /* Garis tepi */
+    <span class="highlight">padding:</span> 40px;       /* Jarak DALAM elemen */
+    <span class="highlight">content:</span> "Teks...";  /* Isi sebenarnya */
+}
+            </div>
+        </section>
+
+        <!-- SECTION 2: MARGIN VS PADDING -->
+        <section class="section" id="marginpadding">
+            <h2 class="section-title">
+                <span class="section-icon">⚖️</span>
+                2. Perbedaan Margin vs Padding
+            </h2>
+
+            <div class="comparison-container">
+                
+                <!-- PADDING DEMO -->
+                <div class="comparison-box">
+                    <div class="comparison-title">PADDING (Ruang DALAM)</div>
+                    <div class="demo-area padding-demo">
+                        <div class="inner-padding">
+                            🎨 Background Biru sampai ke tepi!<br>
+                            <small>Padding = 30px</small>
+                        </div>
+                    </div>
+                    <div class="code-snippet" style="margin-top: 15px;">
+/* Padding */
+.box {
+    background: blue;
+    <span class="highlight">padding: 30px;</span>
+    /* Ruang 30px di DALAM 
+       elemen, ikut warna biru */
+}
+                    </div>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <h4>✅ Gunakan Padding untuk:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Memberi "napas" pada konten</li>
+                            <li>Memperbesar area klik tombol</li>
+                            <li>Jarak teks dari border</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- MARGIN DEMO -->
+                <div class="comparison-box">
+                    <div class="comparison-title">MARGIN (Ruang LUAR)</div>
+                    <div class="demo-area margin-demo">
+                        <div class="inner-margin">
+                            📏 Background Oranye hanya konten!<br>
+                            <small>Margin = 30px</small>
+                        </div>
+                    </div>
+                    <div class="code-snippet" style="margin-top: 15px;">
+/* Margin */
+.box {
+    background: orange;
+    <span class="highlight">margin: 30px;</span>
+    /* Ruang 30px di LUAR 
+       elemen, transparan */
+}
+                    </div>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <h4>✅ Gunakan Margin untuk:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Jarak antar elemen</li>
+                            <li>Memusatkan elemen (margin: auto)</li>
+                            <li>Mendorong elemen menjauh</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="info-box" style="background: #fff3e0; border-color: #ff9800;">
+                <h4>🔍 Perbedaan Kunci:</h4>
+                <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                    <tr style="background: #ff9800; color: white;">
+                        <th style="padding: 10px;">Aspek</th>
+                        <th style="padding: 10px;">Padding</th>
+                        <th style="padding: 10px;">Margin</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Lokasi</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Di dalam border</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Di luar border</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Warna BG</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Ikut warna elemen</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Transparan (tidak terlihat)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Nilai negatif?</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">❌ Tidak bisa</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">✅ Bisa (menarik elemen)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FLOAT & CLEAR -->
+        <section class="section" id="floatclear">
+            <h2 class="section-title">
+                <span class="section-icon">🌊</span>
+                3. Float & Clear
+            </h2>
+
+            <p><strong>Float</strong> membuat elemen "mengambang" ke kiri/kanan, memungkinkan konten mengelilinginya (seperti teks mengelilingi gambar di koran).</p>
+
+            <h3 style="margin: 20px 0 10px; color: #003366;">Contoh Float:</h3>
+            
+            <div class="float-container">
+                <div class="float-box float-left animate">
+                    FLOAT: LEFT<br>
+                    🏊‍♂️
+                </div>
+                <div class="float-box float-right animate">
+                    FLOAT: RIGHT<br>
+                    🏊‍♀️
+                </div>
+                <p style="text-align: justify; padding: 10px;">
+                    Teks ini mengalir di sekitar elemen yang difloat. Float digunakan untuk membuat layout 
+                    multi-kolom pada zaman sebelum Flexbox ada. Namun, float memiliki masalah: 
+                    <strong>parent elemen akan "runtuh" (collapsed)</strong> jika semua children-nya difloat.
+                </p>
+                <div class="clear-demo">
+                    CLEAR: BOTH → Elemen ini turun ke bawah, membersihkan float!
+                </div>
+            </div>
+
+            <div class="code-snippet">
+/* Float */
+.gambar {
+    <span class="highlight">float: left;</span>      /* atau right, none */
+    margin-right: 20px;
+}
+
+/* Clear - Membersihkan efek float */
+.footer {
+    <span class="highlight">clear: both;</span>      /* left, right, both */
+}
+
+/* Clearfix - Solusi modern untuk parent yang collapsed */
+.parent::after {
+    content: "";
+    display: table;
+    <span class="highlight">clear: both;</span>
+}
+            </div>
+
+            <div class="info-box" style="background: #fce4ec; border-color: #e91e63;">
+                <h4>⚠️ Masalah Float:</h4>
+                <p>Ketika semua elemen child menggunakan <code>float</code>, parent elemen kehilangan tinggi (height menjadi 0). 
+                Solusinya: gunakan <strong>clearfix</strong> atau <strong>overflow: hidden</strong> pada parent.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 4: FLEXBOX -->
+        <section class="section" id="flexbox">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                4. Flexbox Layout
+            </h2>
+
+            <p><strong>Flexbox</strong> adalah sistem layout 1 dimensi (baris ATAU kolom) yang lebih modern dan fleksibel daripada float.</p>
+
+            <h3 style="margin: 20px 0 10px; color: #003366;">A. Flex Direction: Row (Horizontal)</h3>
+            <div class="flex-container flex-row">
+                <div class="flex-item">Item 1<br><small>flex: 1</small></div>
+                <div class="flex-item">Item 2<br><small>flex: 1</small></div>
+                <div class="flex-item">Item 3<br><small>flex: 1</small></div>
+            </div>
+
+            <h3 style="margin: 20px 0 10px; color: #003366;">B. Flex Direction: Column (Vertikal)</h3>
+            <div class="flex-container flex-column" style="height: 250px;">
+                <div class="flex-item">Item Atas</div>
+                <div class="flex-item">Item Tengah</div>
+                <div class="flex-item">Item Bawah</div>
+            </div> <br>
+
+
+            <br>
+            <h3 style="margin: 20px 0 10px; color: #003366;">C. Justify Content: Center (Penjajaran Horizontal)</h3>
+            <div class="flex-container flex-center" style="height: 150px; border: 2px dashed #999;">
+                <div class="flex-item" style="flex: 0; padding: 20px 40px;">🎯 Center!</div>
+            </div>
+
+            <div class="code-snippet">
+/* Flexbox Container */
+.container {
+    <span class="highlight">display: flex;</span>           /* Aktifkan flexbox */
+    <span class="highlight">flex-direction:</span> row;     /* row | column */
+    <span class="highlight">justify-content:</span> center; /* horizontal: flex-start | center | flex-end | space-between | space-around */
+    <span class="highlight">align-items:</span> center;     /* vertikal: stretch | flex-start | center | flex-end */
+    <span class="highlight">gap:</span> 20px;               /* Jarak antar item */
+    <span class="highlight">flex-wrap:</span> wrap;         /* wrap | nowrap (turun ke bawah jika penuh) */
+}
+
+/* Flex Items */
+.item {
+    <span class="highlight">flex: 1;</span>                 /* Bagi ruang sama rata */
+    <span class="highlight">flex: 2;</span>                 /* 2x lebih lebar dari flex: 1 */
+}
+            </div>
+
+            <div class="info-box" style="background: #e8f5e9; border-color: #4caf50;">
+                <h4>✅ Keunggulan Flexbox:</h4>
+                <ul style="margin-left: 20px;">
+                    <li>Vertical centering sangat mudah (tidak mungkin dengan float)</li>
+                    <li>Item otomatis sama tinggi (equal height columns)</li>
+                    <li>Urutan item bisa diubah tanpa mengubah HTML</li>
+                    <li>Responsif dengan mudah menggunakan flex-wrap</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 5: MULTIPLE COLUMN -->
+        <section class="section" id="columns">
+            <h2 class="section-title">
+                <span class="section-icon">📰</span>
+                5. Multiple Column Layouts
+            </h2>
+
+            <p>Ada 3 cara membuat layout multi-kolom: <strong>Float</strong> (tradisional), <strong>Flexbox</strong> (modern), dan <strong>Grid</strong> (paling powerful).</p>
+
+            <div class="column-methods">
+
+                <!-- METHOD 1: FLOAT -->
+                <div class="method-box">
+                    <div class="method-header">1. FLOAT (Tradisional)</div>
+                    <div class="method-content">
+                        <div class="float-columns">
+                            <div class="float-col">Kolom 1<br>33.33%</div>
+                            <div class="float-col">Kolom 2<br>33.33%</div>
+                            <div class="float-col">Kolom 3<br>33.33%</div>
+                        </div>
+                        <div class="code-snippet" style="margin-top: 15px; font-size: 0.8em;">
+.col {
+    <span class="highlight">float: left;</span>
+    width: 33.33%;
+}
+.clearfix::after {
+    content: "";
+    <span class="highlight">clear: both;</span>
+    display: table;
+}
+                        </div>
+                        <div class="info-box" style="margin-top: 10px; font-size: 0.9em;">
+                            <strong>❌ Kekurangan:</strong> Perlu clearfix, sulit equal height, tidak responsif otomatis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- METHOD 2: FLEXBOX -->
+                <div class="method-box">
+                    <div class="method-header">2. FLEXBOX (Modern)</div>
+                    <div class="method-content">
+                        <div class="flex-columns">
+                            <div class="flex-col">Kolom 1<br>flex: 1</div>
+                            <div class="flex-col">Kolom 2<br>flex: 1</div>
+                            <div class="flex-col">Kolom 3<br>flex: 1</div>
+                        </div>
+                        <div class="code-snippet" style="margin-top: 15px; font-size: 0.8em;">
+.container {
+    <span class="highlight">display: flex;</span>
+    gap: 10px;
+}
+.col {
+    <span class="highlight">flex: 1;</span>  /* Bagi ruang */
+}
+                        </div>
+                        <div class="info-box" style="margin-top: 10px; font-size: 0.9em; background: #e8f5e9; border-color: #4caf50;">
+                            <strong>✅ Keunggulan:</strong> Equal height otomatis, mudah diatur gap, responsif.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- METHOD 3: GRID -->
+                <div class="method-box">
+                    <div class="method-header">3. CSS GRID (Powerful)</div>
+                    <div class="method-content">
+                        <div class="grid-columns">
+                            <div class="grid-col">Kolom 1</div>
+                            <div class="grid-col">Kolom 2</div>
+                            <div class="grid-col">Kolom 3</div>
+                        </div>
+                        <div class="code-snippet" style="margin-top: 15px; font-size: 0.8em;">
+.container {
+    <span class="highlight">display: grid;</span>
+    <span class="highlight">grid-template-columns:</span> 1fr 1fr 1fr;
+    gap: 10px;
+}
+                        </div>
+                        <div class="info-box" style="margin-top: 10px; font-size: 0.9em; background: #e3f2fd; border-color: #2196f3;">
+                            <strong>🚀 Terbaik untuk:</strong> Layout 2D kompleks, masonry layout, area template.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="info-box">
+                <h4>📊 Perbandingan Cepat:</h4>
+                <table style="width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.9em;">
+                    <tr style="background: #003366; color: white;">
+                        <th style="padding: 10px;">Fitur</th>
+                        <th style="padding: 10px;">Float</th>
+                        <th style="padding: 10px;">Flexbox</th>
+                        <th style="padding: 10px;">Grid</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Dimensi</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">1D (susah)</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">1D (baik)</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">2D (terbaik)</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #ddd;">Equal Height</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">❌ Sulit</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">✅ Otomatis</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">✅ Otomatis</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Vertical Center</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">❌ Tidak bisa</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">✅ Mudah</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">✅ Mudah</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <h3>🎓 Politeknik Negeri Madiun</h3>
+            <p>Tutorial CSS ini dibuat untuk pembelajaran Box Model, Float, Clear, Flexbox, dan Multiple Column</p>
+            <p style="margin-top: 10px; opacity: 0.8;">
+                <strong>Dibuat oleh:</strong> Mufid Husna Fitrianto pada Maret 2025 | 
+                <strong>Mata Kuliah:</strong> Pemrograman Web
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
